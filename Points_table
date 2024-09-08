@@ -1,0 +1,51 @@
+def get_leaderboard(matches:list)->list: 
+    '''Given a list of dictionaries, generate a leaderboard based on points and goal scored.
+    The output should be a list of tuples starting from the top team to bottom one.
+
+    Args:
+        matches : list[dict]
+
+    Returns: 
+        list of tuples - where each entry should be in format: (TeamName, Points, GoalScored)
+                         sorted from top team to bottom. 
+    '''
+    ...
+    result={}
+    for match in matches:
+        team1=match['team1']
+        team2=match['team2']
+        goals1=match['goals1']
+        goals2=match['goals2']
+        if team1 not in result:
+            result[team1]={'points':0,'goals':0}
+        if team2 not in result:
+            result[team2]={'points':0,'goals':0}
+        if goals1>goals2:
+            result[team1]['points']+=2
+            result[team1]['goals']+=goals1
+            result[team2]['goals']+=goals2
+        elif goals2>goals1:
+            result[team2]['points']+=2
+            result[team1]['goals']+=goals1
+            result[team2]['goals']+=goals2
+        else:
+            result[team1]['points']+=1
+            result[team2]['points']+=1
+            result[team1]['goals']+=goals1
+            result[team2]['goals']+=goals2
+    leaderboard=[]
+    for team,stats in result.items():
+        leaderboard.append((team,stats['points'],stats['goals']))
+    sortleaderboard=sorted(leaderboard,key=lambda x:(x[1],x[2]),reverse=True)
+    return sortleaderboard
+matches = [
+    {"team1": "Spain", "team2": "Italy", "goals1": 2, "goals2": 2},
+    {"team1": "England", "team2": "Spain", "goals1": 1, "goals2": 1},
+    {"team1": "Italy", "team2": "England", "goals1": 0, "goals2": 3},
+    {"team1": "Spain", "team2": "Italy", "goals1": 1, "goals2": 0},
+    {"team1": "England", "team2": "Italy", "goals1": 2, "goals2": 2},
+    {"team1": "Spain", "team2": "England", "goals1": 1, "goals2": 1},
+]
+
+print(get_leaderboard(matches))
+   
